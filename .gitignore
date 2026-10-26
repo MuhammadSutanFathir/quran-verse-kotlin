@@ -1,0 +1,32 @@
+# Build dan cache Gradle
+*.iml
+.gradle
+.kotlin
+build/
+/captures
+.externalNativeBuild
+.cxx
+
+# File lokal dan rahasia
+/local.properties
+local.properties
+*.jks
+*.keystore
+*.p12
+keystore.properties
+google-services.json
+
+# Hasil build yang dibagikan
+*.apk
+*.aab
+*.hprof
+
+# Berkas database (termasuk data Al-Qur'an dari LPMQ Kemenag): tidak ikut repositori publik
+*.db
+
+# IDE
+.idea/
+
+# Sistem operasi
+.DS_Store
+Thumbs.db

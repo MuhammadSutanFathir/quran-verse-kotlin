@@ -1,0 +1,387 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "4c9489f0726c7552c68ff5d0d18648cf",
+    "entities": [
+      {
+        "tableName": "surahs",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`number` INTEGER NOT NULL, `name_latin` TEXT NOT NULL, `name_id` TEXT NOT NULL, `name_arabic` TEXT NOT NULL, `revelation` TEXT NOT NULL, `verse_count` INTEGER NOT NULL, PRIMARY KEY(`number`))",
+        "fields": [
+          {
+            "fieldPath": "number",
+            "columnName": "number",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nameLatin",
+            "columnName": "name_latin",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nameId",
+            "columnName": "name_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nameArabic",
+            "columnName": "name_arabic",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "revelation",
+            "columnName": "revelation",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "verseCount",
+            "columnName": "verse_count",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "number"
+          ]
+        }
+      },
+      {
+        "tableName": "juzs",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`number` INTEGER NOT NULL, `start_surah` INTEGER NOT NULL, `start_verse` INTEGER NOT NULL, `end_surah` INTEGER NOT NULL, `end_verse` INTEGER NOT NULL, `start_surah_name` TEXT NOT NULL, `end_surah_name` TEXT NOT NULL, PRIMARY KEY(`number`))",
+        "fields": [
+          {
+            "fieldPath": "number",
+            "columnName": "number",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "startSurah",
+            "columnName": "start_surah",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "startVerse",
+            "columnName": "start_verse",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "endSurah",
+            "columnName": "end_surah",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "endVerse",
+            "columnName": "end_verse",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "startSurahName",
+            "columnName": "start_surah_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "endSurahName",
+            "columnName": "end_surah_name",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "number"
+          ]
+        }
+      },
+      {
+        "tableName": "verses",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`surah_number` INTEGER NOT NULL, `verse_number` INTEGER NOT NULL, `juz_number` INTEGER NOT NULL, `arabic` TEXT NOT NULL, `transliteration` TEXT NOT NULL, `translation_id` TEXT NOT NULL, PRIMARY KEY(`surah_number`, `verse_number`), FOREIGN KEY(`surah_number`) REFERENCES `surahs`(`number`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`juz_number`) REFERENCES `juzs`(`number`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "fields": [
+          {
+            "fieldPath": "surahNumber",
+            "columnName": "surah_number",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "verseNumber",
+            "columnName": "verse_number",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "juzNumber",
+            "columnName": "juz_number",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "arabic",
+            "columnName": "arabic",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "transliteration",
+            "columnName": "transliteration",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "translationId",
+            "columnName": "translation_id",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "surah_number",
+            "verse_number"
+          ]
+        },
+        "indices": [
+          {
+            "name": "idx_verses_surah",
+            "unique": false,
+            "columnNames": [
+              "surah_number",
+              "verse_number"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `idx_verses_surah` ON `${TABLE_NAME}` (`surah_number`, `verse_number`)"
+          },
+          {
+            "name": "idx_verses_juz_number",
+            "unique": false,
+            "columnNames": [
+              "juz_number"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `idx_verses_juz_number` ON `${TABLE_NAME}` (`juz_number`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "surahs",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "surah_number"
+            ],
+            "referencedColumns": [
+              "number"
+            ]
+          },
+          {
+            "table": "juzs",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "juz_number"
+            ],
+            "referencedColumns": [
+              "number"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "bookmark_categories",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `created_at` TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "created_at",
+            "affinity": "TEXT",
+            "notNull": true,
+            "defaultValue": "CURRENT_TIMESTAMP"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_bookmark_categories_name",
+            "unique": true,
+            "columnNames": [
+              "name"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_bookmark_categories_name` ON `${TABLE_NAME}` (`name`)"
+          }
+        ]
+      },
+      {
+        "tableName": "bookmarks",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `category_id` INTEGER NOT NULL, `type` TEXT NOT NULL, `surah_number` INTEGER NOT NULL, `verse_number` INTEGER NOT NULL, `juz_number` INTEGER NOT NULL, `note` TEXT, `created_at` TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY(`category_id`) REFERENCES `bookmark_categories`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`surah_number`, `verse_number`) REFERENCES `verses`(`surah_number`, `verse_number`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`juz_number`) REFERENCES `juzs`(`number`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "categoryId",
+            "columnName": "category_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "type",
+            "columnName": "type",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "surahNumber",
+            "columnName": "surah_number",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "verseNumber",
+            "columnName": "verse_number",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "juzNumber",
+            "columnName": "juz_number",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "note",
+            "columnName": "note",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "created_at",
+            "affinity": "TEXT",
+            "notNull": true,
+            "defaultValue": "CURRENT_TIMESTAMP"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "idx_bookmarks_category_id",
+            "unique": false,
+            "columnNames": [
+              "category_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `idx_bookmarks_category_id` ON `${TABLE_NAME}` (`category_id`)"
+          },
+          {
+            "name": "idx_bookmarks_juz_number",
+            "unique": false,
+            "columnNames": [
+              "juz_number"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `idx_bookmarks_juz_number` ON `${TABLE_NAME}` (`juz_number`)"
+          },
+          {
+            "name": "idx_bookmarks_surah_verse",
+            "unique": false,
+            "columnNames": [
+              "surah_number",
+              "verse_number"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `idx_bookmarks_surah_verse` ON `${TABLE_NAME}` (`surah_number`, `verse_number`)"
+          },
+          {
+            "name": "idx_bookmarks_type",
+            "unique": false,
+            "columnNames": [
+              "type"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `idx_bookmarks_type` ON `${TABLE_NAME}` (`type`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "bookmark_categories",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "category_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "verses",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "surah_number",
+              "verse_number"
+            ],
+            "referencedColumns": [
+              "surah_number",
+              "verse_number"
+            ]
+          },
+          {
+            "table": "juzs",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "juz_number"
+            ],
+            "referencedColumns": [
+              "number"
+            ]
+          }
+        ]
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4c9489f0726c7552c68ff5d0d18648cf')"
+    ]
+  }
+}
